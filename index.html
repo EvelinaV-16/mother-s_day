@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>💐 С Днём матери!</title>
+    <style>
+        /* ---------- БАЗА ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: linear-gradient(145deg, #2d1b3d, #5c2a4a, #8a4a6a);
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            padding: 16px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* ---------- КАРТОЧКА ---------- */
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 680px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 48px;
+            padding: 28px 24px 36px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            text-align: center;
+        }
+
+        /* ---------- ЗАГОЛОВКИ ---------- */
+        h1 {
+            color: #ffd6e8;
+            font-size: clamp(1.8rem, 6.5vw, 2.8rem);
+            text-shadow: 0 0 50px rgba(255, 180, 220, 0.35);
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #e8c4dd;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            margin-bottom: 16px;
+            opacity: 0.85;
+        }
+
+        /* ---------- ИНСТРУКЦИЯ ---------- */
+        .instruction {
+            background: rgba(255, 180, 220, 0.10);
+            padding: 2px 12px;
+            border-radius: 60px;
+            border: 2px solid rgba(255, 180, 220, 0.25);
+            animation: pulseGlow 2.4s infinite ease-in-out;
+            margin-bottom: 13%;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .instruction .icon {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+        }
+
+        .instruction .text {
+            color: #ffe0ee;
+            font-size: clamp(0.9rem, 2.2vw, 1.15rem);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 180, 220, 0.08); }
+            50% { box-shadow: 0 0 45px rgba(255, 180, 220, 0.28); }
+        }
+
+        /* ---------- БУКЕТ (поле для цветов) ---------- */
+        .bouquet-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 2px 0 8px;
+            position: relative;
+            /* место под полукруг */
+            height: clamp(140px, 34vw, 200px);
+            align-items: flex-end;
+            padding-bottom: 12px;
+        }
+
+        .bouquet {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 100%;
+        }
+
+        /* каждый цветок позиционируем абсолютно по дуге */
+        .flower {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transform-origin: center bottom;
+            transition: transform 0.4s ease;
+        }
+
+        /* стебель */
+        .flower-stem {
+            width: 3px;
+            background: linear-gradient(to top, #3a6b3a, #5a9a5a);
+            border-radius: 2px;
+            transition: height 0.5s ease;
+        }
+
+        /* контейнер головки цветка */
+        .flower-head {
+            position: relative;
+            width: clamp(34px, 9vw, 52px);
+            height: clamp(34px, 9vw, 52px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ---------- БУТОН (закрытый) ---------- */
+        .bud {
+            width: 45%;
+            height: 60%;
+            background: radial-gradient(ellipse at top, #d4a8c8, #9a6b8a);
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.2),
+                        0 0 10px rgba(255, 180, 220, 0.15);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        /* маленький хвостик сверху бутона */
+        .bud::before {
+            content: '';
+            position: absolute;
+            top: -12%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30%;
+            height: 25%;
+            background: #8a9a6a;
+            border-radius: 50% 50% 0 0;
+        }
+
+        /* ---------- РАСКРЫТЫЙ ЦВЕТОК ---------- */
+        .petals {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.2) rotate(-30deg);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* лепесток */
+        .petal {
+            position: absolute;
+            width: 45%;
+            height: 55%;
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            transform-origin: center bottom;
+            box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* расположение лепестков по кругу */
+        .petal:nth-child(1) { transform: rotate(0deg)   translateY(-38%); }
+        .petal:nth-child(2) { transform: rotate(60deg)  translateY(-38%); }
+        .petal:nth-child(3) { transform: rotate(120deg) translateY(-38%); }
+        .petal:nth-child(4) { transform: rotate(180deg) translateY(-38%); }
+        .petal:nth-child(5) { transform: rotate(240deg) translateY(-38%); }
+        .petal:nth-child(6) { transform: rotate(300deg) translateY(-38%); }
+
+        /* сердцевина */
+        .flower-center {
+            position: absolute;
+            width: 32%;
+            height: 32%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fff3a0, #ffb800);
+            box-shadow: 0 0 10px rgba(255, 200, 50, 0.6);
+            z-index: 3;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+        }
+
+        /* ---------- СОСТОЯНИЕ: РАСКРЫТ ---------- */
+        .flower.bloomed .bud {
+            opacity: 0;
+            transform: scale(0.3);
+        }
+
+        .flower.bloomed .petals {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .flower.bloomed .flower-center {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ---------- СЧЁТЧИК ---------- */
+        .counter {
+            color: #ffe0ee;
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            margin-top: 12px;
+            background: rgba(0, 0, 0, 0.30);
+            padding: 6px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* ---------- ПОЖЕЛАНИЕ ---------- */
+        .wish {
+            display: none;
+            margin-top: 18px;
+            padding: 20px 18px;
+            background: rgba(255, 180, 220, 0.10);
+            border-radius: 24px;
+            border: 2px solid #ffb4dc;
+            animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+        }
+
+        .wish.show {
+            display: block;
+        }
+
+        .wish h2 {
+            color: #ffb4dc;
+            font-size: clamp(1.5rem, 4.5vw, 2rem);
+            margin-bottom: 6px;
+        }
+
+        .wish p {
+            color: #f5e6ff;
+            font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+            line-height: 1.6;
+        }
+
+        .wish img {
+            margin-top: 12px;
+            max-width: 40%;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .wish .signature {
+            margin-top: 8px;
+            color: #ffd6e8;
+            font-style: italic;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.3) rotate(-4deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* ---------- КОНФЕТТИ ---------- */
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg) scale(0); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg) scale(1); opacity: 0; }
+        }
+
+        /* ---------- КНОПКА РЕСЕТ ---------- */
+        .reset-btn {
+            margin-top: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f5e6ff;
+            padding: 10px 32px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .reset-btn:hover {
+            background: rgba(255, 180, 220, 0.18);
+            color: #fff;
+        }
+        .reset-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ---------- АДАПТИВ ---------- */
+        @media (max-width: 500px) {
+            .card {
+                padding: 20px 16px 28px;
+                border-radius: 32px;
+            }
+            .instruction {
+                padding: 10px 18px;
+                margin-bottom: 12%;
+            }
+            .bouquet-wrapper {
+                height: clamp(120px, 40vw, 170px);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .card {
+                padding: 40px 48px 48px;
+                max-width: 720px;
+            }
+            .bouquet {
+                max-width: 520px;
+            }
+            .instruction {
+                padding: 14px 32px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .card {
+                padding: 16px 24px 20px;
+                border-radius: 28px;
+                max-width: 560px;
+            }
+            h1 { font-size: clamp(1.5rem, 4vw, 2rem); }
+            .bouquet-wrapper { height: 120px; }
+            .instruction { padding: 6px 16px; margin-bottom: 10px; }
+            .counter { margin-top: 6px; padding: 4px 16px; font-size: 0.8rem; }
+            .subtitle { margin-bottom: 8px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="app">
+    <h1>💐 С Днём матери!</h1>
+    <div class="subtitle">✨ Самой родной и любимой ✨</div>
+
+    <div class="instruction" id="instruction">
+        <span class="icon">🎤</span>
+        <span class="text">Подуй в телефон — оживи цветы</span>
+        <span class="icon">🌸</span>
+    </div>
+
+    <div class="bouquet-wrapper">
+        <div class="bouquet" id="bouquet"></div>
+    </div>
+
+    <div class="counter" id="counter">🌸 0 из 11 раскрылось</div>
+
+    <div class="wish" id="wishBlock">
+        <h2>🌸 Мамочка, с Днём матери!</h2>
+        <p>
+            Спасибо за тепло, заботу и бесконечную любовь. Ты — мой самый близкий человек, моя опора и поддержка.<br />
+            Желаю тебе здоровья, счастья и как можно больше светлых дней. Пусть каждый день приносит радость, а рядом всегда будут те, кого ты любишь. 💖
+        </p>
+        <img src="https://github.com/EvelinaV-16/happy_birthday_card/blob/main/IMG_20250827_005500_036.jpg?raw=true" alt="sender photo" />
+        <p class="signature">От Эвелины ✨</p>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">🌸 Раскрыть снова</button>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+    // ================================================================
+    // 1. НАСТРОЙКИ
+    // ================================================================
+    const FLOWER_COUNT = 11;
+    let flowers = [];
+    let allBloomed = false;
+    let isGameActive = true;
+
+    const bouquetEl = document.getElementById('bouquet');
+    const counterEl = document.getElementById('counter');
+    const wishBlock = document.getElementById('wishBlock');
+
+    // палитра лепестков
+    const petalPalettes = [
+        ['#ff9ec4', '#ff6ba8', '#ffd0e0'], // розовый
+        ['#ffb88c', '#ff8a5c', '#ffe0c8'], // персиковый
+        ['#c9a0ff', '#a86bff', '#e8d0ff'], // сиреневый
+        ['#ff8a8a', '#ff5c5c', '#ffd0d0'], // коралловый
+        ['#ffc9e0', '#ff9ec4', '#ffe8f0'], // нежно-розовый
+        ['#d4a8ff', '#b87aff', '#f0d8ff'], // лиловый
+        ['#ffa8c4', '#ff7aa8', '#ffe0ec'], // малиновый
+        ['#ffb0a0', '#ff8060', '#ffdcd0'], // лососевый
+        ['#b8a0ff', '#9070ff', '#e0d0ff'], // фиолетовый
+        ['#ffc0a0', '#ff9a70', '#ffe8d8'], // абрикосовый
+        ['#ff9ad4', '#ff6bb8', '#ffd8ec']  // фуксия
+    ];
+
+    // ================================================================
+    // 2. СОЗДАНИЕ БУКЕТА (полукруг)
+    // ================================================================
+    function createBouquet() {
+        bouquetEl.innerHTML = '';
+        flowers = [];
+        allBloomed = false;
+        isGameActive = true;
+        wishBlock.classList.remove('show');
+
+        const total = FLOWER_COUNT;
+
+        for (let i = 0; i < total; i++) {
+            // угол от -75° до +75° (полукруг)
+            const t = total === 1 ? 0.5 : i / (total - 1);
+            const angle = -75 + t * 150; // градусы
+            const rad = (angle * Math.PI) / 180;
+
+            // радиус дуги (в % от ширины контейнера)
+            const radiusX = 42; // горизонтальный разлёт
+            const radiusY = 42; // вертикальный подъём
+
+            // позиция: центр внизу, отклоняем по дуге
+            const offsetX = Math.sin(rad) * radiusX; // %
+            const offsetY = -Math.cos(rad) * radiusY + radiusY; // % (0 внизу, max вверху)
+
+            // высота стебля зависит от позиции (центральные выше)
+            const stemHeight = 30 + Math.cos(rad) * 35; // px-ish через clamp
+
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.dataset.index = i;
+            flower.dataset.bloomed = 'false';
+
+            // позиционирование по дуге
+            flower.style.left = `calc(50% + ${offsetX}%)`;
+            flower.style.bottom = `${Math.max(0, offsetY)}%`;
+            flower.style.transform = `translateX(-50%)`;
+
+            // стебель
+            const stem = document.createElement('div');
+            stem.className = 'flower-stem';
+            stem.style.height = `clamp(20px, ${stemHeight / 6}vw, ${stemHeight / 2.5}px)`;
+
+            // головка
+            const head = document.createElement('div');
+            head.className = 'flower-head';
+
+            // бутон
+            const bud = document.createElement('div');
+            bud.className = 'bud';
+
+            // лепестки
+            const petals = document.createElement('div');
+            petals.className = 'petals';
+
+            const palette = petalPalettes[i % petalPalettes.length];
+            for (let p = 0; p < 6; p++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                // градиент лепестка из палитры
+                petal.style.background = `radial-gradient(ellipse at 50% 90%, ${palette[2]}, ${palette[1]} 60%, ${palette[0]})`;
+                petals.appendChild(petal);
+            }
+
+            // сердцевина
+            const center = document.createElement('div');
+            center.className = 'flower-center';
+
+            head.appendChild(bud);
+            head.appendChild(petals);
+            head.appendChild(center);
+
+            flower.appendChild(head);
+            flower.appendChild(stem);
+
+            bouquetEl.appendChild(flower);
+
+            flowers.push({
+                element: flower,
+                bud: bud,
+                petals: petals,
+                center: center,
+                bloomed: false,
+                index: i
+            });
+        }
+        updateCounter();
+        clearConfetti();
+    }
+
+    // ================================================================
+    // 3. РАСКРЫТИЕ ОДНОГО СЛУЧАЙНОГО ЦВЕТКА
+    // ================================================================
+    function bloomOne() {
+        if (!isGameActive || allBloomed) return;
+
+        const closedFlowers = flowers.filter(f => !f.bloomed);
+
+        if (closedFlowers.length === 0) {
+            checkAllBloomed();
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * closedFlowers.length);
+        const flowerToBloom = closedFlowers[randomIndex];
+
+        flowerToBloom.element.classList.add('bloomed');
+        flowerToBloom.element.dataset.bloomed = 'true';
+        flowerToBloom.bloomed = true;
+
+        if (navigator.vibrate) navigator.vibrate(15);
+        updateCounter();
+        checkAllBloomed();
+    }
+
+    // ================================================================
+    // 4. ПРОВЕРКА ПОБЕДЫ
+    // ================================================================
+    function checkAllBloomed() {
+        if (allBloomed) return;
+        const closedCount = flowers.filter(f => !f.bloomed).length;
+        if (closedCount === 0) {
+            allBloomed = true;
+            isGameActive = false;
+            setTimeout(() => {
+                showWish();
+                launchConfetti();
+            }, 500);
+        }
+    }
+
+    // ================================================================
+    // 5. ОБНОВЛЕНИЕ СЧЁТЧИКА
+    // ================================================================
+    function updateCounter() {
+        const bloomedCount = flowers.filter(f => f.bloomed).length;
+        counterEl.textContent = `🌸 ${bloomedCount} из ${FLOWER_COUNT} раскрылось`;
+        if (allBloomed) {
+            counterEl.textContent = '💐 Букет собран!';
+        }
+    }
+
+    // ================================================================
+    // 6. ПОЖЕЛАНИЕ + КОНФЕТТИ
+    // ================================================================
+    function showWish() {
+        wishBlock.classList.add('show');
+    }
+
+    function launchConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#ff9ec4', '#ffb88c', '#c9a0ff', '#ff8a8a', '#ffd6e8', '#d4a8ff', '#ff7aa8', '#ffc0a0'];
+        for (let i = 0; i < 150; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.top = '-10px';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = (Math.random() * 10 + 4) + 'px';
+            el.style.height = (Math.random() * 10 + 4) + 'px';
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (Math.random() * 2.5 + 1.5) + 's';
+            el.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(el);
+        }
+        setTimeout(() => clearConfetti(), 5000);
+    }
+
+    function clearConfetti() {
+        document.getElementById('confettiContainer').innerHTML = '';
+    }
+
+    // ================================================================
+    // 7. МИКРОФОН
+    // ================================================================
+    let audioContext = null;
+    let analyser = null;
+    let dataArray = null;
+    let isListening = false;
+    let blowCooldown = false;
+
+    function initAudio() {
+        if (audioContext) return;
+
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 512;
+            analyser.smoothingTimeConstant = 0.8;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                .then(stream => {
+                    const source = audioContext.createMediaStreamSource(stream);
+                    source.connect(analyser);
+                    isListening = true;
+                    detectBlow();
+                })
+                .catch(err => {
+                    console.warn('Микрофон не доступен:', err);
+                });
+        } catch (e) {
+            console.warn('WebAudio не поддерживается');
+        }
+    }
+
+    function detectBlow() {
+        if (!isListening || !analyser) return;
+
+        analyser.getByteFrequencyData(dataArray);
+
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+            sum += dataArray[i];
+        }
+        const avg = sum / dataArray.length;
+
+        const BLOW_THRESHOLD = 55;
+
+        if (avg > BLOW_THRESHOLD && !blowCooldown && !allBloomed) {
+            blowCooldown = true;
+            bloomOne();
+
+            if (navigator.vibrate) navigator.vibrate(20);
+
+            setTimeout(() => {
+                blowCooldown = false;
+            }, 600);
+        }
+
+        requestAnimationFrame(detectBlow);
+    }
+
+    // ================================================================
+    // 8. ЗАПУСК
+    // ================================================================
+    createBouquet();
+
+    setTimeout(() => {
+        initAudio();
+    }, 300);
+
+    document.addEventListener('click', () => {
+        if (!audioContext) initAudio();
+    }, { once: true });
+
+    document.addEventListener('touchstart', () => {
+        if (!audioContext) initAudio();
+    }, { once: true });
+
+    // ================================================================
+    // 9. РЕСЕТ
+    // ================================================================
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        createBouquet();
+        clearConfetti();
+        allBloomed = false;
+        isGameActive = true;
+    });
+</script>
+
+</body>
+</html>
